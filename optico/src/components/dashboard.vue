@@ -29,7 +29,7 @@
                         &#x1f50d;<span class="sr-only">Search</span>
                         </template>
                         <b-dropdown-item href="#">Action</b-dropdown-item>
-                        <b-dropdown-item href="#">Logout</b-dropdown-item>
+                        <b-dropdown-item @click="logout()">Logout</b-dropdown-item>
                     </b-dropdown>
                     </div>    
                 </b-col>
@@ -41,7 +41,37 @@
   </div>
 </template>
 
+<script>
+export default {
+    data(){
 
+    },
+    methods:{
+        getCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(";");
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == " ") c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        },
+        eraseCookie(name) {   
+            document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        },
+        logout(){
+            this.eraseCookie("username");
+            this.$router.push("/");
+        }
+    },
+    created(){
+        if(!this.getCookie('username')){
+            this.$router.push("/");
+        }
+    }
+}
+</script>
 
 <style>
 .nav-bar {
